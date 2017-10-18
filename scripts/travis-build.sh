@@ -9,8 +9,16 @@ if [ $(echo "$TRAVIS_BRANCH" | egrep -c '^v[0-9][0-9\.]*$') -gt 0 ]; then
 fi
 
 env | grep TRAVIS | sort
-npm version
-aws --version
+
+if [ -z "$TRAVIS_COMMIT_RANGE" ]; then
+    if [ -z "$TRAVIS_COMMIT" ]; then
+        TRAVIS_COMMIT_RANGE="HEAD^..HEAD"
+    else
+        TRAVIS_COMMIT_RANGE="${TRAVIS_COMMIT}^..${TRAVIS_COMMIT}"
+    fi
+fi
+
+echo "TRAVIS_COMMIT_RANGE now ${TRAVIS_COMMIT_RANGE}"
 
 export DOCKER_REGISTRY
 ECHO=echo
