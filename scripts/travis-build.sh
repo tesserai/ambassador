@@ -91,6 +91,9 @@ if [ \( -z "$TRAVIS_COMMIT_RANGE" \) -o \( $nondoc_changes -gt 0 \) ]; then
 
     $ECHO make VERSION=${VERSION} EXTRA_DOCKER_ARGS=-q travis-images
 
+    # Run some tests next.
+    bash scripts/travis-test.sh ${VERSION} "${DOCKER_REGISTRY}/ambassador:${VERSION}"
+
     # Assume we'll push app.json to, uh, app.json...
     SCOUT_KEY=app.json
 
