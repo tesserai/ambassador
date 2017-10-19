@@ -5,6 +5,7 @@ set -e
 VERSION="$1"
 IMAGE="$2"
 
+echo "kubernaut set-token $(echo $KUBERNAUT_TOKEN | sum)"
 kubernaut set-token "$KUBERNAUT_TOKEN"
 
 set -x
