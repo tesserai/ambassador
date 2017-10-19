@@ -1,18 +1,25 @@
 sudo: false
 dist: trusty
 language: python
+
 addons:
   apt:
     packages:
     - python3
     - docker-ce
+
 python:
 - '3.6'
+
 install:
 - pip install -r dev-requirements.txt
 - pip install -r ambassador/requirements.txt
+- curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+- chmod +x ./kubectl
+
 services:
 - docker
+
 env:
   global:
   - DOCKER_REGISTRY=-

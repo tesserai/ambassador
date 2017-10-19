@@ -12,7 +12,7 @@ set -x
 kubernaut claim 
 export KUBECONFIG=${HOME}/.kube/kubernaut
 
-kubectl cluster-info
+./kubectl cluster-info
 
 kubernaut discard
 
