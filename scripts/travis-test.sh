@@ -5,10 +5,10 @@ set -e
 VERSION="$1"
 IMAGE="$2"
 
-echo "kubernaut set-token $(echo $KUBERNAUT_TOKEN | sum)"
-kubernaut set-token "$KUBERNAUT_TOKEN"
-
 set -x
+
+ls -l $HOME/.config/kubernaut
+sum $HOME/.config/kubernaut/config.json
 
 kubernaut claim 
 export KUBECONFIG=${HOME}/.kube/kubernaut
