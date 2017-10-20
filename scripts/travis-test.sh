@@ -9,6 +9,7 @@ set -x
 
 ls -l $HOME/.config/kubernaut
 sum $HOME/.config/kubernaut/config.json
+echo "$KUBERNAUT_ID" > $HOME/.config/kubernaut/id
 
 kubernaut claim 
 export KUBECONFIG=${HOME}/.kube/kubernaut
