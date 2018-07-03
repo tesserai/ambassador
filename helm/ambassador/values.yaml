@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+ambassadorID: ""
+
 image:
   repository: quay.io/datawire/ambassador
   pullPolicy: IfNotPresent
@@ -27,6 +29,7 @@ service:
   #     config:
   #       diagnostics:
   #         enabled: false
+  annotationsYAML: "{}"
 
 adminService:
   create: true

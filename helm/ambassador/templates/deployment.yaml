@@ -25,7 +25,7 @@ spec:
       serviceAccountName: {{ template "ambassador.serviceAccountName" . }}
       containers:
         - name: ambassador
-          image: "{{ .Values.image.repository }}:{{ template "ambassador.imageTag" . }}"
+          image: {{ if .Values.imageName }}{{ .Values.imageName }}{{ else }}"{{ .Values.image.repository }}:{{ template "ambassador.imageTag" . }}"{{ end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -39,6 +39,8 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
+          - name: AMBASSADOR_ID
+            value: {{ .Values.ambassadorID | quote }}
           {{- if .Values.timing }}
           {{- if .Values.timing.restart }}
           - name: AMBASSADOR_RESTART_TIME

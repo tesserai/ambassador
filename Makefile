@@ -19,7 +19,7 @@ SHELL = bash
 # Welcome to the Ambassador Makefile...
 
 .FORCE:
-.PHONY: .FORCE clean version setup-develop print-vars docker-login docker-push docker-images publish-website helm
+.PHONY: .FORCE clean setup-develop print-vars docker-login docker-push docker-images publish-website helm
 
 # MAIN_BRANCH
 # -----------
@@ -104,7 +104,7 @@ else
 AMBASSADOR_DOCKER_REPO ?= $(DOCKER_REGISTRY)/ambassador
 endif
 
-DOCKER_OPTS =
+DOCKER_OPTS = --build-arg=VERSION=$(VERSION)
 
 NETLIFY_SITE=datawire-ambassador
 
@@ -206,11 +206,6 @@ ifneq ($(DOCKER_REGISTRY), -)
 	fi
 endif
 		
-version:
-	# TODO: validate version is conformant to some set of rules might be a good idea to add here
-	$(call check_defined, VERSION, VERSION is not set)
-	@echo "Generating and templating version information -> $(VERSION)"
-	sed -e "s/{{VERSION}}/$(VERSION)/g" < VERSION-template.py > ambassador/ambassador/VERSION.py
 
 e2e-versioned-manifests: venv website-yaml
 	cd end-to-end && PATH=$(shell pwd)/venv/bin:$(PATH) bash create-manifests.sh $(AMBASSADOR_DOCKER_IMAGE)
@@ -255,7 +250,7 @@ e2e: e2e-versioned-manifests
 setup-develop: venv
 	venv/bin/pip install -q -e ambassador/.
 
-test: version setup-develop
+test: setup-develop
 	cd ambassador && PATH=$(shell pwd)/venv/bin:$(PATH) pytest --tb=short --cov=ambassador --cov=ambassador_diag --cov-report term-missing
 
 update-aws:
@@ -298,7 +293,7 @@ release:
 # Virtualenv
 # ------------------------------------------------------------------------------
 
-venv: version venv/bin/activate
+venv: venv/bin/activate
 
 venv/bin/activate: dev-requirements.txt ambassador/.
 	test -d venv || virtualenv venv --python python3

@@ -35,6 +35,7 @@ LABEL PROJECT_REPO_URL         = "git@github.com:datawire/ambassador.git" \
       VENDOR                   = "Datawire" \
       VENDOR_URL               = "https://datawire.io/"
 
+ARG VERSION
 # This Dockerfile is set up to install all the application-specific stuff into
 # /ambassador.
 #
@@ -55,6 +56,7 @@ RUN pip3 install -r requirements.txt
 
 # Install the application itself
 COPY ./ ambassador
+RUN sed -e "s/{{VERSION}}/${VERSION}/g" < ambassador/VERSION-template.py > ambassador/ambassador/VERSION.py
 RUN cd ambassador && python3 setup.py --quiet install
 RUN rm -rf ./ambassador
 

@@ -7,10 +7,8 @@ metadata:
     chart: {{ template "ambassador.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-{{- with .Values.service.annotations }}
   annotations:
-{{ toYaml . | indent 4 }}
-{{- end }}
+{{ fromYaml .Values.service.annotationsYAML | toYaml | indent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
